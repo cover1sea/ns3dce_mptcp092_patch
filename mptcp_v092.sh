@@ -1,112 +1,135 @@
 #!/bin/bash
 
-#cd ~
+apt update
+apt install -y wget
+
+cd ~
+#download
+mkdir mptcp_patch
+cd mptcp_patch
 git clone -b v0.92 https://github.com/multipath-tcp/mptcp.git
 git clone -b libos-v4.4 https://github.com/libos-nuse/net-next-nuse/
 
-#ファイルのコピーを自動化
+#file copy
 
 #1
 
-cp -f net-next-nuse/fs/proc/proc_sysctl.c mptcp-0.92/fs/proc/
+cp -f net-next-nuse/fs/proc/proc_sysctl.c mptcp/fs/proc/
 
 #2
 
-cp -f net-next-nuse/include/linux/slab.h mptcp-0.92/include/linux/
+cp -f net-next-nuse/include/linux/slab.h mptcp/include/linux/
 
-cp -f net-next-nuse/mm/Makefile mptcp-0.92/mm/
+cp -f net-next-nuse/mm/Makefile mptcp/mm/
 
-cp -f net-next-nuse/mm/slab.h   mptcp-0.92/mm/
+cp -f net-next-nuse/mm/slab.h   mptcp/mm/
 
 #3
 
-cp -f net-next-nuse/include/linux/slib_def.h mptcp-0.92/include/linux/
+cp -f net-next-nuse/include/linux/slib_def.h mptcp/include/linux/
 
-cp -f net-next-nuse/mm/slib.c   mptcp-0.92/mm/
+cp -f net-next-nuse/mm/slib.c   mptcp/mm/
 
 #4,9
 
-mkdir mptcp-0.92/arch/lib
+mkdir mptcp/arch/lib
 
-cp -f -r net-next-nuse/arch/lib/include mptcp-0.92/arch/lib/
-rm -rf mptcp-0.92/arch/lib/generated
-cp -f net-next-nuse/arch/lib/lib-device.c      mptcp-0.92/arch/lib/
+cp -f -r net-next-nuse/arch/lib/include mptcp/arch/lib/
+rm -rf mptcp/arch/lib/generated
+cp -f net-next-nuse/arch/lib/lib-device.c      mptcp/arch/lib/
 
-cp -f net-next-nuse/arch/lib/lib-socket.c      mptcp-0.92/arch/lib/
+cp -f net-next-nuse/arch/lib/lib-socket.c      mptcp/arch/lib/
 
-cp -f net-next-nuse/arch/lib/lib.c             mptcp-0.92/arch/lib/
+cp -f net-next-nuse/arch/lib/lib.c             mptcp/arch/lib/
 
-cp -f net-next-nuse/arch/lib/lib.h             mptcp-0.92/arch/lib/
+cp -f net-next-nuse/arch/lib/lib.h             mptcp/arch/lib/
 
 #5
 
-cp -f net-next-nuse/arch/lib/hrtimer.c         mptcp-0.92/arch/lib/
+cp -f net-next-nuse/arch/lib/hrtimer.c         mptcp/arch/lib/
 
-cp -f net-next-nuse/arch/lib/tasklet-hrtimer.c mptcp-0.92/arch/lib/
+cp -f net-next-nuse/arch/lib/tasklet-hrtimer.c mptcp/arch/lib/
 
-cp -f net-next-nuse/arch/lib/time.c            mptcp-0.92/arch/lib/
+cp -f net-next-nuse/arch/lib/time.c            mptcp/arch/lib/
 
-cp -f net-next-nuse/arch/lib/timer.c           mptcp-0.92/arch/lib/
+cp -f net-next-nuse/arch/lib/timer.c           mptcp/arch/lib/
 
 #6
 
-cp -f net-next-nuse/arch/lib/sched.c           mptcp-0.92/arch/lib/
+cp -f net-next-nuse/arch/lib/sched.c           mptcp/arch/lib/
 
-cp -f net-next-nuse/arch/lib/softirq.c         mptcp-0.92/arch/lib/
+cp -f net-next-nuse/arch/lib/softirq.c         mptcp/arch/lib/
 
-cp -f net-next-nuse/arch/lib/tasklet.c         mptcp-0.92/arch/lib/
+cp -f net-next-nuse/arch/lib/tasklet.c         mptcp/arch/lib/
 
-cp -f net-next-nuse/arch/lib/workqueue.c       mptcp-0.92/arch/lib/
+cp -f net-next-nuse/arch/lib/workqueue.c       mptcp/arch/lib/
 
 #7
 
-cp -f net-next-nuse/arch/lib/sysctl.c          mptcp-0.92/arch/lib/
+cp -f net-next-nuse/arch/lib/sysctl.c          mptcp/arch/lib/
 
 #8
 
-cp -f net-next-nuse/arch/lib/capability.c      mptcp-0.92/arch/lib/
+cp -f net-next-nuse/arch/lib/capability.c      mptcp/arch/lib/
 
-cp -f net-next-nuse/arch/lib/filemap.c         mptcp-0.92/arch/lib/
+cp -f net-next-nuse/arch/lib/filemap.c         mptcp/arch/lib/
 
-cp -f net-next-nuse/arch/lib/fs.c              mptcp-0.92/arch/lib/
+cp -f net-next-nuse/arch/lib/fs.c              mptcp/arch/lib/
 
-cp -f net-next-nuse/arch/lib/glue.c            mptcp-0.92/arch/lib/
+cp -f net-next-nuse/arch/lib/glue.c            mptcp/arch/lib/
 
-cp -f net-next-nuse/arch/lib/modules.c         mptcp-0.92/arch/lib/
+cp -f net-next-nuse/arch/lib/modules.c         mptcp/arch/lib/
 
-cp -f net-next-nuse/arch/lib/pid.c             mptcp-0.92/arch/lib/
+cp -f net-next-nuse/arch/lib/pid.c             mptcp/arch/lib/
 
-cp -f net-next-nuse/arch/lib/print.c           mptcp-0.92/arch/lib/
+cp -f net-next-nuse/arch/lib/print.c           mptcp/arch/lib/
 
-cp -f net-next-nuse/arch/lib/proc.c            mptcp-0.92/arch/lib/
+cp -f net-next-nuse/arch/lib/proc.c            mptcp/arch/lib/
 
-cp -f net-next-nuse/arch/lib/random.c          mptcp-0.92/arch/lib/
+cp -f net-next-nuse/arch/lib/random.c          mptcp/arch/lib/
 
-cp -f net-next-nuse/arch/lib/sysfs.c           mptcp-0.92/arch/lib/
+cp -f net-next-nuse/arch/lib/sysfs.c           mptcp/arch/lib/
 
-cp -f net-next-nuse/arch/lib/vmscan.c          mptcp-0.92/arch/lib/
+cp -f net-next-nuse/arch/lib/vmscan.c          mptcp/arch/lib/
 
 #10
 
-cp -f net-next-nuse/arch/lib/.gitignore        mptcp-0.92/arch/lib/
+cp -f net-next-nuse/arch/lib/.gitignore        mptcp/arch/lib/
 
-cp -f net-next-nuse/arch/lib/Kconfig           mptcp-0.92/arch/lib/
+cp -f net-next-nuse/arch/lib/Kconfig           mptcp/arch/lib/
 
-cp -f net-next-nuse/arch/lib/Makefile          mptcp-0.92/arch/lib/
+cp -f net-next-nuse/arch/lib/Makefile          mptcp/arch/lib/
 
-cp -f net-next-nuse/arch/lib/Makefile.print    mptcp-0.92/arch/lib/
+cp -f net-next-nuse/arch/lib/Makefile.print    mptcp/arch/lib/
 
-cp -f net-next-nuse/arch/lib/defconfig         mptcp-0.92/arch/lib/
+cp -f net-next-nuse/arch/lib/defconfig         mptcp/arch/lib/
 
-cp -f net-next-nuse/arch/lib/generate-linker-script.py mptcp-0.92/arch/lib/
+cp -f net-next-nuse/arch/lib/generate-linker-script.py mptcp/arch/lib/
 
 #11
 
-cp -f -r net-next-nuse/tools/testing/libos mptcp-0.92/tools/testing/
+cp -f -r net-next-nuse/tools/testing/libos mptcp/tools/testing/
 
+cd mptcp
+make defconfig ARCH=lib
 
+cd arch
+diff -p1 < ../../mptcp_v092.patch
 
-cd mptcp-0.92
+cd ..
+make clean
+make defconfig ARCH=lib
+echo "set MPTCP redundant from m to *"
+sleep 5
+make menuconfig ARCH=lib
+make defconfig ARCH=lib
+make library ARCH=lib 
 
-#Make defconfig ARCH=lib
+cp -rf arch/lib/include/ ~/mptcp-0.89/mptcp/arch/sim/
+cd /home/ns3/mptcp-0.89/mptcp/arch/sim/test/buildtop/build/bin_dce/
+ln -fs ~/mptcp_patch/mptcp/arch/lib/tools/libsim-linux.so liblinux.so
+
+cd ~/mptcp-0.89/mptcp/arch/sim/test/buildtop/source/ns-3-dce/
+./waf clean
+./waf
 

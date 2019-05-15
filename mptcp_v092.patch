@@ -1,0 +1,59 @@
+diff -uraN old/lib/Makefile mptcp/arch/lib/Makefile
+--- old/lib/Makefile	2019-05-15 07:32:44.024135887 +0000
++++ mptcp/arch/lib/Makefile	2019-05-15 07:39:20.478636516 +0000
+@@ -78,7 +78,8 @@
+ endif
+ 
+ KBUILD_CFLAGS := CFLAGS
+-LDFLAGS += -shared -nodefaultlibs -Wl,-z,lazy -lgcc_s -g3 -Wl,-O1 -Wl,-T$(ARCH_DIR)/linker.lds $(covl_$(COV))
++#LDFLAGS += -shared -nodefaultlibs -Wl,-z,lazy -lgcc_s -g3 -Wl,-O1 -Wl,-T$(ARCH_DIR)/linker.lds $(covl_$(COV))
++LDFLAGS += -shared -nodefaultlibs -Wl,-z,lazy -g3 -Wl,-O1 -Wl,-T$(ARCH_DIR)/linker.lds $(covl_$(COV))
+ 
+ # targets
+ 
+diff -uraN old/lib/lib-socket.c mptcp/arch/lib/lib-socket.c
+--- old/lib/lib-socket.c	2019-05-15 07:32:44.024135887 +0000
++++ mptcp/arch/lib/lib-socket.c	2019-05-15 07:37:48.886075823 +0000
+@@ -119,9 +119,26 @@
+ 			 int *namelen)
+ {
+ 	struct socket *sock = (struct socket *)socket;
+-	int retval = sock->ops->getname(sock, name, namelen, 0);
+-
++	int len;
++	struct sockaddr_storage address;
++ 
++	if (!namelen)
++		return -EINVAL;
++ 
++	int retval = sock->ops->getname(sock, (struct sockaddr *)&address,&len, 0);
++	if (*namelen >= len) {
++		memcpy(name, &address, len);
++		*namelen = len;
++	}
++	else {
++		memcpy(name, &address, *namelen);
++  	}
+ 	return retval;
++
++ 	//struct socket *sock = (struct socket *)socket;
++	//int retval = sock->ops->getname(sock, name, namelen, 0);
++
++	//return retval;
+ }
+ int lib_sock_getpeername(struct SimSocket *socket, struct sockaddr *name,
+ 			 int *namelen)
+diff -uraN old/lib/sysctl.c mptcp/arch/lib/sysctl.c
+--- old/lib/sysctl.c	2019-05-15 07:32:44.028135914 +0000
++++ mptcp/arch/lib/sysctl.c	2019-05-15 07:41:34.403443420 +0000
+@@ -14,6 +14,10 @@
+ #include "sim-assert.h"
+ #include "sim-types.h"
+ 
++#include <linux/mount.h>
++
++unsigned int sysctl_mount_max=10000;
++
+ int drop_caches_sysctl_handler(struct ctl_table *table, int write,
+ 			       void *buffer, size_t *length, loff_t *ppos)
+ {
