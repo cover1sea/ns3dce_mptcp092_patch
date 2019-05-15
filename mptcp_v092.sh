@@ -1,7 +1,7 @@
 #!/bin/bash
 #from docker ns3dce/mptcp:v0.89
-apt update
-apt install -y wget
+sudo apt update
+sudo apt install -y wget
 
 cd ~
 #download
