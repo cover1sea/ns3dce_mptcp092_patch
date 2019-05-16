@@ -3,10 +3,8 @@
 sudo apt update
 sudo apt install -y wget
 
-cd ~
+SRC_DIR=$(cd $(dirname $0); pwd)
 #download
-mkdir mptcp_patch
-cd mptcp_patch
 git clone -b v0.92 https://github.com/multipath-tcp/mptcp.git
 git clone -b libos-v4.4 https://github.com/libos-nuse/net-next-nuse/
 
@@ -114,20 +112,20 @@ cd mptcp
 make defconfig ARCH=lib
 
 cd arch
-diff -p1 < ../../mptcp_v092.patch
+patch -p1 < ../../mptcp_v092.patch
 
 cd ..
 make clean
 make defconfig ARCH=lib
-echo "set MPTCP redundant from m to *"
-sleep 5
+echo "Configure MPTCP settings."
+read -p "Press Enter to continue..."
 make menuconfig ARCH=lib
 make defconfig ARCH=lib
 make library ARCH=lib 
 
 cp -rf arch/lib/include/ ~/mptcp-0.89/mptcp/arch/sim/
 cd /home/ns3/mptcp-0.89/mptcp/arch/sim/test/buildtop/build/bin_dce/
-ln -fs ~/mptcp_patch/mptcp/arch/lib/tools/libsim-linux.so liblinux.so
+ln -fs `echo ${SRC_DIR}/mptcp/arch/lib/tools/libsim-linux.so` liblinux.so
 
 cd ~/mptcp-0.89/mptcp/arch/sim/test/buildtop/source/ns-3-dce/
 ./waf clean
