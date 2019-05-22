@@ -120,7 +120,6 @@ make defconfig ARCH=lib
 echo "Configure MPTCP settings."
 read -p "Press Enter to continue..."
 make menuconfig ARCH=lib
-make defconfig ARCH=lib
 make library ARCH=lib 
 
 cp -rf arch/lib/include/ ~/mptcp-0.89/mptcp/arch/sim/
